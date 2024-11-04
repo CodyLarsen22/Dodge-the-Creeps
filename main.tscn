@@ -1,0 +1,54 @@
+[gd_scene load_steps=7 format=3 uid="uid://jcgoohe5rsl1"]
+
+[ext_resource type="PackedScene" uid="uid://b0sss0u2e24pc" path="res://player.tscn" id="1_3tml6"]
+[ext_resource type="Script" path="res://main.gd" id="1_37d33"]
+[ext_resource type="PackedScene" uid="uid://dspgk1dvg5kwo" path="res://hud.tscn" id="3_ol6or"]
+[ext_resource type="AudioStream" uid="uid://cb5iyvc3j6a7n" path="res://dodge_the_creeps_2d_assets/art/gameover.wav" id="4_u2ioq"]
+[ext_resource type="AudioStream" uid="uid://xgc4bvqpotnp" path="res://dodge_the_creeps_2d_assets/art/House In a Forest Loop.ogg" id="5_pk5w3"]
+
+[sub_resource type="Curve2D" id="Curve2D_3o82f"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 480, 0, 0, 0, 0, 0, 480, 720, 0, 0, 0, 0, 0, 720, 0, 0, 0, 0, 0, 0)
+}
+point_count = 6
+
+[node name="Main" type="Node"]
+script = ExtResource("1_37d33")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.52549, 1, 0.607843, 1)
+
+[node name="Player" parent="." instance=ExtResource("1_3tml6")]
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="ScoreTimer" type="Timer" parent="."]
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(240, 450)
+
+[node name="MobPath" type="Path2D" parent="."]
+curve = SubResource("Curve2D_3o82f")
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+position = Vector2(-0.0860596, 0)
+
+[node name="HUD" parent="." instance=ExtResource("3_ol6or")]
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_u2ioq")
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_pk5w3")
+
+[connection signal="start_game" from="HUD" to="." method="new_game"]
